@@ -1,6 +1,6 @@
 # MeshCurate — AI-Organized Instagram/Facebook Saves
 
-A personal web app to organize your saved Instagram and Facebook posts/reels
+A web app to organize your saved Instagram and Facebook posts/reels
 into categories automatically, using Claude AI to read the caption and sort
 it for you — solving the "everything just dumped in one Saved folder"
 problem.
