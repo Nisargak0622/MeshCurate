@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - MeshCurate{% endblock %}
+{% block content %}
+
+<div class="category-bar">
+    {% for cat in categories %}
+        <a href="{{ url_for('dashboard', category=cat) }}"
+           class="chip {% if cat == selected_category %}chip-active{% endif %}">
+            {{ cat }}
+        </a>
+    {% endfor %}
+</div>
+
+{% if posts %}
+<div class="grid">
+    {% for post in posts %}
+    <div class="card">
+        <div class="card-header">
+            <span class="badge">{{ post.category }}</span>
+            <span class="platform">{{ post.platform }}</span>
+        </div>
+
+        <div class="embed-wrapper">
+            {% if post.platform == "instagram" %}
+                <blockquote class="instagram-media" data-instgrm-permalink="{{ post.url }}"
+                             data-instgrm-version="14" style="width:100%;"></blockquote>
+            {% elif post.platform == "facebook" %}
+                <iframe
+                    src="https://www.facebook.com/plugins/post.php?href={{ post.url | urlencode }}&show_text=true&width=350"
+                    width="100%" height="400" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                    allowfullscreen="true"></iframe>
+            {% else %}
+                <a href="{{ post.url }}" target="_blank" class="plain-link">{{ post.url }}</a>
+            {% endif %}
+        </div>
+
+        {% if post.note %}
+        <p class="note">📝 {{ post.note }}</p>
+        {% endif %}
+
+        <div class="card-actions">
+            <form method="POST" action="{{ url_for('toggle_favorite', post_id=post.id) }}">
+                <button type="submit" class="btn-icon">
+                    {% if post.is_favorite %}⭐ Favorited{% else %}☆ Favorite{% endif %}
+                </button>
+            </form>
+            <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}"
+                  onsubmit="return confirm('Delete this saved post?');">
+                <button type="submit" class="btn-icon btn-danger">🗑 Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No saved posts in this category yet.</p>
+    <a href="{{ url_for('add_post') }}" class="btn-primary">Save your first post</a>
+</div>
+{% endif %}
+
+{% endblock %}

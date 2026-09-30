@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Save a Post - MeshCurate{% endblock %}
+{% block content %}
+<div class="auth-box">
+    <h2>Save a new post</h2>
+    <form method="POST">
+        <label>Post / Reel URL</label>
+        <input type="url" name="url" placeholder="https://www.instagram.com/p/..." required>
+
+        <label>Caption (paste it so AI can categorize it)</label>
+        <textarea name="caption" rows="3" placeholder="Paste the post's caption here..."></textarea>
+
+        <label>Category</label>
+        <select name="category">
+            <option value="Auto">🤖 Let AI decide from the caption</option>
+            {% for cat in categories %}
+                <option value="{{ cat }}">{{ cat }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Your notes (optional)</label>
+        <textarea name="note" rows="2" placeholder="Why did you save this? Any reminders?"></textarea>
+
+        <button type="submit" class="btn-primary">Save Post</button>
+    </form>
+</div>
+{% endblock %}
