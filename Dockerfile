@@ -1,17 +1,13 @@
-FROM python:3.12-slim
+FROM mcr.microsoft.com/playwright/python:v1.47.0-jammy
 
 WORKDIR /app
-
-# Install system dependencies Playwright's Chromium needs
-RUN apt-get update && apt-get install -y \
-    wget \
-    && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install the actual Chromium browser + its OS-level dependencies
-RUN playwright install --with-deps chromium
+# Chromium and all its OS-level dependencies are already installed in this
+# base image, matching playwright==1.47.0 in requirements.txt exactly - no
+# separate "playwright install" step needed.
 
 COPY . .
 
